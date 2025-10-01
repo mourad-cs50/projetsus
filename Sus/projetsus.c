@@ -45,10 +45,20 @@ Products product[5] = {
 
 };
 
+int Current_stock[5];
 
+int Check_user(){
 
+if (client.idClient == 0)
+{
+    printf("Please create an profile.");
+    printf("You cannot access other options if you do not have a profile!");
+    return 0;
+}
 
+return 1;
 
+}
 
 
 void Gestion_de_profil_client( ){
@@ -56,20 +66,28 @@ void Gestion_de_profil_client( ){
 
 int Profile_Choice;
 
+printf("=== Gestion du profil client ===\n");
+printf("=== Enter a choice ===\n");
 
-    printf("=== Gestion du profil client ===\n");
-       printf("=== Enter a choice ===\n");
+printf("1.Profile creation\n");
+printf("2.Editing profile\n");
+printf("3.profile consultation\n");
 
-    printf("1.Profile creation\n");
-    printf("2.Editing profile\n");
-    printf("3.profile consultation\n");
+printf("enter a number : ");
+scanf("%i" , &Profile_Choice);
 
-    printf("enter a number\n");
-    scanf("%i" , &Profile_Choice);
 
-    if (Profile_Choice == 1)
+switch (Profile_Choice)
     {
-         printf("...Profile creation...\n");
+    case 1:
+         
+    if (client.idClient != 0)
+    {
+        printf("An acount is already existed.\n");
+    }
+    
+
+        printf("...Profile creation...\n");
 
         printf("Enter your first name: ");
         scanf("%s" , client.name);
@@ -82,79 +100,86 @@ int Profile_Choice;
          
         sprintf(client.email, "%s%s@Client.com", client.name, client.prenom);
         printf("The email is automaticly generated : %s \n",client.email);
-    }
-    
-    else if (Profile_Choice == 2)
-    {
 
+        if (! Check_user())return;
+        break;
+
+        case 2:
+        if (! Check_user())return;
         printf("...Editing profile...\n");
 
          printf("Enter your first name: ");
-        scanf("%s" , client.name);
+        scanf(" %[^\n]" , client.name);
 
         printf("Enter your second name: ");
-        scanf("%s" , client.prenom);
+        scanf(" %[^\n]" , client.prenom);
 
         sprintf(client.email, "%s%s@Client.com", client.name, client.prenom);
         printf("The email is automaticly generated after the editing :  %s \n ",client.email);
-        
-    }
+        break;
+
+        case 3:
+        if (! Check_user())return;
+        printf("\n...Client Profile...\n");
+
+
+        printf("Client ID = %i.\n" , client.idClient);
+        printf("First name = %s.\n" ,client.name );
+        printf("Second name = %s.\n" , client.prenom);
+        printf("Email = %s.\n" ,client.email );
+
+        break;
     
-else if (Profile_Choice == 3)
-{
-    printf("\n...Client Profile...\n");
-
-
-     printf("Client ID = %i.\n" , client.idClient);
-     printf("First name = %s.\n" ,client.name );
-     printf("Second name = %s.\n" , client.prenom);
-     printf("Email = %s." ,client.email );
-
-
-}
+        default:
+        printf("Invalid choice\n");
+        break;
+    }
 
 
 
 }
 void Gestion_du_Solde_Virtuel(){
+     
+    if (! Check_user())return;
+   
+    
+
     float Buy_Product;
     int Choise_Sold;
     float Amount;
    
 
-     printf("=== Virtual balance management ===\n");
-       printf("=== Enter a choice ===\n");
+    printf("=== Virtual balance management ===\n");
+    printf("=== Enter a choice ===\n");
 
-    printf("1.Topping up the virtual balance\\n");
+    printf("1.Topping up the virtual balance\n");
     printf("2. Displaying the available amount\n");
     printf("3.Checking your balance before each purchaset\n");
 
-    printf("enter a number\n");
+    printf("enter a number : ");
     scanf("%i" , &Choise_Sold);
-    
-     if (Choise_Sold == 1)
+
+    switch (Choise_Sold)
     {
-         printf(" Enter the balance number you want to recharge: \n");
-         scanf("%f" , &Amount);
-        client.solde += Amount;
+    case 1:
 
-         printf(" The Balance %.2f is added successfully.\n" ,client.solde);
+    printf(" Enter the balance number you want to recharge: \n");
+    scanf("%f" , &Amount);
+    client.solde += Amount;
 
-    }
-    
-    else if (Choise_Sold == 2)
-    {
+    printf(" The Balance %.2f is added successfully.\n" ,client.solde);
+    break;
 
-        printf(" The Balance is: %.2f.\n" , client.solde);
-      
-    }
-    
-else if (Choise_Sold == 3)
-{
-    printf("enter the price of the product that you want to buy\n");
-     scanf("%f" , &Buy_Product);
+    case 2:
+    printf(" The Balance is: %.2f.\n" , client.solde);
+    break;
+
+    case 3:
+         
+    printf("enter the price of the product that you want to buy: ");
+    scanf("%f" , &Buy_Product);
    
-         if (Buy_Product <= client.solde)
+    if (Buy_Product <= client.solde)
          {
             printf("your balance is enough for buy process\n");
          }
@@ -163,13 +188,20 @@ else if (Choise_Sold == 3)
          {
             printf("your balance is not enough for buy process\n");
          }
-         
-}
+    
+    default:
+    printf("Invalid choice");
+    break;
+    }
+    
+
 
 }
 
 
 void Catalogue_des_Produits(){
+
+if (! Check_user())return;
 int Choice_product;
 char search[20];
 char Search_for_Product[20];
@@ -178,32 +210,38 @@ int found=0;
 
 
 
-       printf("=== Products Catalog ===\n");
-       printf("=== Enter a choice ===\n");
+printf("=== Products Catalog ===\n");
+printf("=== Enter a choice ===\n");
 
-    printf("1.Product list with prices and stock\n");
-    printf("2.to product Search category\n");
-    printf("3.Product By price Sorting By price descending\n");
-    printf("4.Product Details\n");
+printf("1.Product list with prices and stock\n");
+printf("2.to product Search category\n");
+printf("3.Product By price Sorting By price descending\n");
+printf("4.Product Details\n");
     
-
-    scanf("%i" , &Choice_product);
-    printf("enter a number\n");
+printf("enter a number : ");
+scanf("%i" , &Choice_product);
+   
 
 
     
-
-    if (Choice_product == 1)
+switch (Choice_product)
     {
-        for (int i = 0; i < 5 ; i++)
+    case 1:
+
+         for (int i = 0; i < 5 ; i++)
         {
-            printf("product p%s , name=%s , prix=%2.f , stock=%i.\n" ,product[i].idProduit,product[i].nom,product[i].prix,product[i].stock);
+            printf("product p%s | name = %s | prix = %2.f | stock = %i.\n" ,product[i].idProduit,product[i].nom,product[i].prix,product[i].stock);
         }
-    }
-    
-    if (Choice_product == 2)
-    {
-        printf("enter the categorie of the product that you want to find\n");
+        break;
+
+    case 2:
+       for (int i = 0; i < 5; i++)
+       {
+        printf("The avaliable categories are : %s\n" , product[i].categorie);
+       }
+       
+      
+      printf("Enter the categorie of the product that you want to find:");
          scanf(" %[^\n]" , search);
 
         for (int i = 0; i < 5; i++)
@@ -220,14 +258,10 @@ int found=0;
         {
             printf("the product is not on the list.\n");
         }
-    }
-    
-    
-    
+        break;
 
-    if (Choice_product == 3)
-    {
-        printf("Sorting prices By price descending\n");
+        case 3:
+            printf("Sorting prices By price descending\n");
        
         for (int i = 0; i < 5; i++)
         {
@@ -249,13 +283,12 @@ int found=0;
 
             for (int i = 0; i < 5; i++)
             {
-                printf("product p%s \n name=%s \n prix=%.2f \n" ,product[i].idProduit,product[i].nom,product[i].prix);
+                printf("product p%s | name=%s | prix=%.2f \n" ,product[i].idProduit,product[i].nom,product[i].prix);
             }
-    }
-    
-    if (Choice_product == 4)
-    {
-        printf("enter the id of the product.\n");
+            break;
+
+            case 4:
+          printf("enter the id of the product.\n");
          scanf("%s" , Search_for_Product);
         for (int i = 0; i < 5; i++)
         {
@@ -271,22 +304,155 @@ int found=0;
             printf("the product is not on the list.");   
         
         }
-
-        
-        
+        break;
+    default:
+    printf("Invalid choice");
+        break;
     }
-    
-   
-    
+
 
 }
 
 
+void Processus_dAchat(){
+
+if (! Check_user())return;
+
+
+char Choice_from_the_catalog[10]; 
+int Confirm;
+int found=0;
+int Mark=-1;
+int Quantity;
+
+ printf("enter the Id of the product that you want to buy:");
+ scanf("%s" , Choice_from_the_catalog);
+
+for (int i = 0; i < 5; i++)
+{
+    if (strcmp (product[i].idProduit , Choice_from_the_catalog)==0)
+    {
+        printf("The product is found : %s | product name : %s | product categorie : %s | price : %2.f | stock : %i | description : %s\n " 
+         , product[i].idProduit, product[i].nom , product[i].categorie , product[i].prix , product[i].stock , product[i].description);
+
+         Mark=i;
+         found = 1;
+
+         printf("Do you want to purchase this product\n");
+          printf("1.Yes || 2.No");
+           scanf("%i" , &Confirm);
+           break;
+        } 
+    }
+    
+     if (!found)
+    {
+        printf("The product is not on the menu\n");
+        return;
+        
+    }
+
+        switch (Confirm)
+        {
+        case 1:
+              
+             printf("Enter the quantity you need");
+             scanf("%i" , &Quantity);
+
+
+            if (product[Mark].stock > 0 && client.solde >= (product[Mark].prix * Quantity))
+            {
+                product[Mark].stock -= Quantity;
+                client.solde -= product[Mark].prix * Quantity;
+                printf("The purchase was completed successfully.");
+                printf("you buy : %s | product: %s| price: %.2f | " , product[Mark].idProduit, product[Mark].nom, product[Mark].prix);
+            }
+        
+
+
+        else if (product[Mark].stock <= 0)
+        {
+            printf("Sorry this product is out .");
+        }
+
+        else
+       {
+           printf("Sorry your balance is not enough.");
+       }
+           
+            break;
+
+            case 2:
+             printf("Thank you! we will take you to the main selection board.");
+             break;
+        default:
+        printf("Invalid choice");
+            break;
+        }
+
+}
+
+
+void purchasing_statistics(){
+    if (! Check_user())return;
+int Total_sold[5];
+printf("=== Your statistics ===\n");
+
+for (int i = 0; i < 5; i++)
+{
+   Total_sold[i]= Current_stock[i] - product[i].stock;
+}
+
+int Max_sold=Total_sold[0];
+int Max_product=0;
+for (int i = 1; i < 5; i++)
+{
+    if (Total_sold[i] > Max_sold)
+    {
+        Max_sold = Total_sold[i];
+        Max_product = i;
+    }
+    
+}
+
+int Min_sold=Total_sold[0];
+int Min_product=0;
+for (int j = 1; j < 5; j++)
+{
+    if (Total_sold[j] < Min_sold)
+    {
+        Min_sold = Total_sold[j];
+        Min_product = j;
+    }
+    
+}
+
+printf("The most registered product in the purchase list is : %s | Sold value : %i\n" ,product[Max_product].nom,Max_sold);
+printf("The mlowest registered product in the purchase list is : %s | sold value : %i\n" ,product[Min_product].nom,Min_sold);
+
+printf("---Sold---\n");
+printf("User sold : %2.f\n" ,client.solde);
+
+printf("---Stock---\n");
+for (int i = 0; i < 5; i++)
+{
+    printf("Product stock = Product name : %s | stock : %i\n" ,product[i].nom,product[i].stock);
+}
+
+
+
+}
 
 
 int main (){
 
    int Choices; 
+   for (int i = 0; i < 5; i++)
+   {
+     Current_stock[i] = product[i].stock;
+   }
+   
+  
    
     
    do
@@ -302,7 +468,8 @@ int main (){
     printf("2.Gestion du solde virtuel\n");
     printf("3.Consultation des produits\n");
     printf("4.Effectuer un achat\n");
-    printf("5.Quitter l'application\n");
+    printf("5.Mes statistiques\n");
+    printf("0.Quitter l'application\n");
 
     scanf("%i" , &Choices);
     
@@ -311,12 +478,14 @@ int main (){
     case 1 :Gestion_de_profil_client(); break;
     case 2 :Gestion_du_Solde_Virtuel(); break;
     case 3 :Catalogue_des_Produits(); break;
+    case 4 :Processus_dAchat(); break;
+    case 5 :purchasing_statistics(); break;
         
     default:
         break;
     }
 
-   } while (Choices!=5);
+   } while (Choices!=0);
    
 
 
