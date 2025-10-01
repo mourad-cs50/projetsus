@@ -428,7 +428,7 @@ for (int j = 1; j < 5; j++)
 }
 
 printf("The most registered product in the purchase list is : %s | Sold value : %i\n" ,product[Max_product].nom,Max_sold);
-printf("The mlowest registered product in the purchase list is : %s | sold value : %i\n" ,product[Min_product].nom,Min_sold);
+printf("The lowest registered product in the purchase list is : %s | sold value : %i\n" ,product[Min_product].nom,Min_sold);
 
 printf("---Sold---\n");
 printf("User sold : %2.f\n" ,client.solde);
